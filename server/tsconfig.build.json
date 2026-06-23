@@ -1,0 +1,17 @@
+{
+  // Production build: emit compiled JS to dist/ for a fast cold start (node runs
+  // dist/index.js directly — no on-the-fly tsx transpile). `npm run dev` (tsx
+  // watch) stays the development path. Tests live outside src/, so they're excluded.
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    // Inherit module/moduleResolution from the base (ESNext + Bundler) — it types
+    // third-party ESM (e.g. exa-js's default export) correctly, and since the
+    // source already uses explicit .js import specifiers, the emitted ESM runs
+    // directly under Node with package.json "type":"module".
+    "noEmit": false,
+    "outDir": "dist",
+    "sourceMap": true
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/scripts/_*.ts"]
+}

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Solo Harness — Rubric Talking Points</title>
+<style>
+  @page { size: A4; margin: 13mm 13mm; }
+  * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  :root {
+    --ink: #14181f; --muted: #5b6675; --line: #e3e7ee;
+    --must: #2563eb; --should: #0d9488; --bonus: #9333ea;
+    --bg-must: #eff4ff; --bg-should: #ecfdf8; --bg-bonus: #f8effe;
+  }
+  body {
+    margin: 0; color: var(--ink); background: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 10.4px; line-height: 1.42;
+  }
+  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  h1 { font-size: 21px; letter-spacing: -.4px; margin: 0; }
+  .sub { color: var(--muted); font-size: 10.5px; margin-top: 3px; }
+  .hd { border-bottom: 2px solid var(--ink); padding-bottom: 9px; margin-bottom: 12px; display:flex; justify-content:space-between; align-items:flex-end; }
+  .hd .r { text-align:right; font-size: 8.6px; color: var(--muted); line-height:1.5; }
+
+  .callout { border:1px solid #f0c36b; background:#fff8e8; border-radius:9px; padding:9px 12px; margin-bottom:14px; font-size:10.2px; }
+  .callout b { color:#9a6a00; }
+  .callout .t { font-weight:800; font-size:9px; text-transform:uppercase; letter-spacing:1px; color:#b07400; margin-bottom:3px; }
+
+  .sec { margin-bottom: 13px; page-break-inside: avoid; }
+  .sec-h { display:flex; align-items:center; gap:8px; margin-bottom:7px; }
+  .sec-h .pill { font-size:9px; font-weight:800; letter-spacing:1px; text-transform:uppercase; padding:2px 9px; border-radius:999px; color:#fff; }
+  .sec-h .ln { flex:1; height:1px; }
+  .sec-h .n { font-size:9px; color:var(--muted); }
+  .must .pill { background:var(--must); } .should .pill { background:var(--should); } .bonus .pill { background:var(--bonus); }
+  .must .ln { background:linear-gradient(90deg,var(--must),transparent);} .should .ln{background:linear-gradient(90deg,var(--should),transparent);} .bonus .ln{background:linear-gradient(90deg,var(--bonus),transparent);}
+
+  .card { border:1px solid var(--line); border-left-width:3px; border-radius:8px; padding:8px 11px; margin-bottom:7px; break-inside:avoid; }
+  .must .card { border-left-color:var(--must); }
+  .should .card { border-left-color:var(--should); }
+  .bonus .card { border-left-color:var(--bonus); background:var(--bg-bonus); }
+  .req { font-weight:750; font-size:11px; margin-bottom:4px; }
+  .req .num { color:var(--muted); font-weight:600; margin-right:5px; }
+  .line { font-size:10.2px; margin-top:2.5px; display:flex; gap:7px; }
+  .line .k { flex:0 0 38px; font-weight:800; font-size:8px; text-transform:uppercase; letter-spacing:.6px; padding-top:1.5px; }
+  .line.say .k { color:var(--must); } .line.show .k { color:#b06a00; }
+  .line .v { color:#2a323d; }
+  .line .v code, .v .c { font-family: ui-monospace, monospace; font-size:9.2px; background:#f2f4f8; border:1px solid var(--line); border-radius:4px; padding:0 4px; }
+
+  .foot { border-top:1px solid var(--line); margin-top:8px; padding-top:7px; font-size:9px; color:var(--muted); }
+  .foot b { color:var(--ink); }
+</style>
+</head>
+<body>
+  <div class="hd">
+    <div>
+      <h1>Solo Harness — Rubric Talking Points</h1>
+      <div class="sub">What to <b>say</b> and what to <b>show</b> for each requirement</div>
+    </div>
+    <div class="r">Rishik Kolpekwar<br>Gauntlet AI · 24-hour Build Challenge</div>
+  </div>
+
+  <div class="callout">
+    <div class="t">Don't trip on this</div>
+    One <b>worker = Claude</b> (the brain the harness governs). The <b>scraper is MATERIAL HANDLING</b> — a pillar, not a worker.
+    Your <b>"second worker" is a different brain</b> (Claude Opus, or a mock worker), <b>not</b> the scraper. Say it this way and you hit material handling AND the swap bonus.
+  </div>
+
+  <!-- MUST -->
+  <div class="sec must">
+    <div class="sec-h"><span class="pill">Must</span><span class="ln"></span><span class="n">required to pass</span></div>
+
+    <div class="card">
+      <div class="req"><span class="num">1</span>Four pillars, separate from the worker</div>
+      <div class="line say"><span class="k">say</span><span class="v">the harness wraps ONE worker (Claude). the four pillars are separate, named modules — I can point to each file: <span class="c">tools/</span> (material handling), <span class="c">guardrails.ts</span>, checkpoints, alarms.</span></div>
+      <div class="line show"><span class="k">show</span><span class="v">architecture diagram: worker in the center, four labeled boxes around it. then the actual code tree.</span></div>
+    </div>
+
+    <div class="card">
+      <div class="req"><span class="num">2</span>Agent behavior changes from pillar feedback</div>
+      <div class="line say"><span class="k">say</span><span class="v">the worker changes what it does based on the pillars: a low-relevance item is dropped before it ever sees it; a failed hallucination checkpoint makes it strip the uncited claim and re-run.</span></div>
+      <div class="line show"><span class="k">show</span><span class="v">before/after: an item scored <span class="c">0.31</span> dropped by the threshold; a checkpoint FAIL forcing a re-run of just that stage.</span></div>
+    </div>
+
+    <div class="card">
+      <div class="req"><span class="num">3</span>Guardrails declared · checkpoints explicit pass/fail</div>
+      <div class="line say"><span class="k">say</span><span class="v">guardrails aren't buried in a prompt — they're declared constants. every checkpoint has an explicit pass/fail rule.</span></div>
+      <div class="line show"><span class="k">show</span><span class="v">the constants on screen: <span class="c">RELEVANCE_THRESHOLD = 0.4</span>, <span class="c">NO_SEND_WITHOUT_APPROVAL</span>, token cap, allow-lists. a stage stamped pass / fail.</span></div>
+    </div>
+
+    <div class="card">
+      <div class="req"><span class="num">4</span>Structured alarms</div>
+      <div class="line say"><span class="k">say</span><span class="v">every alarm is a structured object — named type, severity, context, recommended action. not a log string.</span></div>
+      <div class="line show"><span class="k">show</span><span class="v"><span class="c">{ type: "GUARDRAIL_VIOLATION", severity: "critical", context: "send without approval", recommendedAction: "hard block + log" }</span></span></div>
+    </div>
+
+    <div class="card">
+      <div class="req"><span class="num">5</span>Runs on real input at demo time</div>
+      <div class="line say"><span class="k">say</span><span class="v">this runs on MY real work — today's actual brief from my news, jobs, and inbox, scored against my profile: pathology AI, AI infra, VC, quant.</span></div>
+      <div class="line show"><span class="k">show</span><span class="v">the live Solo UI generating today's brief, end to end.</span></div>
+    </div>
+
+    <div class="card">
+      <div class="req"><span class="num">6</span>HARNESS.md exists</div>
+      <div class="line say"><span class="k">say</span><span class="v">architecture and all four pillars are documented in HARNESS.md in the repo.</span></div>
+      <div class="line show"><span class="k">show</span><span class="v">scroll the file — the four pillar headings + the architecture diagram.</span></div>
+    </div>
+  </div>
+
+  <!-- SHOULD -->
+  <div class="sec should">
+    <div class="sec-h"><span class="pill">Should</span><span class="ln"></span><span class="n">strong credit</span></div>
+
+    <div class="card">
+      <div class="req"><span class="num">7</span>Swappable agent interface</div>
+      <div class="line say"><span class="k">say</span><span class="v">the harness only depends on a <span class="c">Worker</span> interface. no pillar references Claude or the SDK. dropping in a different agent needs zero harness changes.</span></div>
+      <div class="line show"><span class="k">show</span><span class="v">the <span class="c">Worker</span> interface and the <span class="c">makeWorker()</span> factory — the loop calls <span class="c">worker.step()</span>, nothing model-specific.</span></div>
+    </div>
+
+    <div class="card">
+      <div class="req"><span class="num">8</span>Checkpoints persisted · replayable</div>
+      <div class="line say"><span class="k">say</span><span class="v">every checkpoint persists to SQLite. I can replay from checkpoint 3 without re-running stages 1 and 2.</span></div>
+      <div class="line show"><span class="k">show</span><span class="v">kill a run mid-way, then replay from a checkpoint — prior stages are not recomputed.</span></div>
+    </div>
+
+    <div class="card">
+      <div class="req"><span class="num">9</span>Human-in-the-loop escalation</div>
+      <div class="line say"><span class="k">say</span><span class="v">the harness stops and asks instead of guessing: outbound drafts hit a review gate, and HIGH / CRITICAL alarms pause the run for acknowledgment.</span></div>
+      <div class="line show"><span class="k">show</span><span class="v">the review gate (approve / edit / reject) before anything sends; an alarm pausing the run.</span></div>
+    </div>
+  </div>
+
+  <!-- BONUS -->
+  <div class="sec bonus">
+    <div class="sec-h"><span class="pill">Bonus</span><span class="ln"></span><span class="n">go for it</span></div>
+
+    <div class="card">
+      <div class="req"><span class="num">10</span>Second worker swapped in live</div>
+      <div class="line say"><span class="k">say</span><span class="v">same harness, same four pillars, new brain: I swap Claude <b>Sonnet → Opus</b> (and show a tiny <span class="c">MockWorker</span>) with zero code changed in any pillar.</span></div>
+      <div class="line show"><span class="k">show</span><span class="v">the worker name flips in the logs from <span class="c">claude:sonnet-4-6</span> to <span class="c">claude:opus-4-8</span> — same checkpoints and alarms still fire.</span></div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <b>One-line close:</b> "four pillars, separate and named · the worker is swappable behind one interface · and it ran on my real data, live." &nbsp;·&nbsp; map the scraper to <b>material handling</b>, never to "worker."
+  </div>
+</body>
+</html>

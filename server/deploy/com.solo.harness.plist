@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.solo.harness</string>
+
+  <!-- Run the compiled prod build directly with Node (fast cold start; no tsx transpile). -->
+  <key>ProgramArguments</key>
+  <array>
+    <string>/opt/homebrew/bin/node</string>
+    <string>/Users/rishikkolpekwar/Documents/Coding Projects/Side Projects/solo/server/dist/index.js</string>
+  </array>
+
+  <!-- cwd = server/ so env.ts reads server/.env and all cwd-relative data paths resolve. -->
+  <key>WorkingDirectory</key>
+  <string>/Users/rishikkolpekwar/Documents/Coding Projects/Side Projects/solo/server</string>
+
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>NODE_ENV</key>
+    <string>production</string>
+    <key>PATH</key>
+    <string>/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+  </dict>
+
+  <!-- Start at login AND auto-restart on crash/exit (survives Mac sleep + crashes). -->
+  <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
+  <true/>
+  <!-- Don't hot-loop a crashing boot: wait 10s between (re)starts. -->
+  <key>ThrottleInterval</key>
+  <integer>10</integer>
+
+  <key>StandardOutPath</key>
+  <string>/Users/rishikkolpekwar/Documents/Coding Projects/Side Projects/solo/server/logs/harness.out.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/rishikkolpekwar/Documents/Coding Projects/Side Projects/solo/server/logs/harness.err.log</string>
+</dict>
+</plist>

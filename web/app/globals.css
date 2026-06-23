@@ -1,0 +1,220 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* Solo Harness — dark, glassy theme to match the Bolt-style hero */
+:root {
+  --background: #0f0f0f;
+  --foreground: #ededed;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-display: var(--font-space-grotesk), system-ui, sans-serif;
+  --font-serif: var(--font-newsreader), Georgia, "Times New Roman", serif;
+}
+
+html,
+body {
+  background: #06070b;
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Futuristic utilities ---------- */
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Glassy panel: translucent dark surface that lets the aurora glow through. */
+.glass {
+  background: rgba(13, 16, 24, 0.55);
+  backdrop-filter: blur(16px) saturate(130%);
+  -webkit-backdrop-filter: blur(16px) saturate(130%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.glass-strong {
+  background: rgba(10, 12, 18, 0.78);
+  backdrop-filter: blur(20px) saturate(130%);
+  -webkit-backdrop-filter: blur(20px) saturate(130%);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+/* Soft glow for futuristic headings / accents. */
+.text-glow {
+  text-shadow: 0 0 24px rgba(20, 136, 252, 0.45);
+}
+
+/* Animated conic gradient border (for the input + key panels). */
+@property --beam {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+@keyframes beam-spin {
+  to {
+    --beam: 360deg;
+  }
+}
+.beam-border {
+  position: relative;
+}
+.beam-border::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(
+    from var(--beam),
+    transparent 0deg,
+    rgba(20, 136, 252, 0.7) 40deg,
+    rgba(94, 227, 192, 0.6) 90deg,
+    transparent 140deg,
+    transparent 360deg
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: beam-spin 6s linear infinite;
+  pointer-events: none;
+}
+
+/* Slow shimmer sweep used on the hero wordmark + brief banner. */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+.animate-shimmer {
+  background-size: 200% auto;
+  animation: shimmer 6s linear infinite;
+}
+
+/* Thin, unobtrusive scrollbars for the dark UI */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.12) transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+@keyframes solo-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+.animate-solo-pulse {
+  animation: solo-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes solo-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+}
+.animate-solo-blink {
+  animation: solo-blink 1s steps(2, start) infinite;
+}
+
+/* ---------- The morning brief: dark broadsheet ("night edition") ----------
+   An editorial read on the app's own #06070b background — serif body, hairline
+   rules, small-caps kickers, drop-cap lede — with the same neon ink accent the
+   rest of the app uses, so the brief and the chat read as one product. */
+.broadsheet {
+  --ink: #e8edf5; /* headlines / strong text */
+  --ink-soft: #a8b0bd; /* body prose */
+  --ink-faint: #6a7283; /* captions / meta */
+  --rule: rgba(255, 255, 255, 0.1); /* hairline rules + column rules */
+  --paper: #06070b; /* the app background (used as ink-on-accent) */
+  --accent: #5ee3c0; /* neon ink accent — kickers, marks */
+  --link: #7cc0ff; /* neon link blue */
+  /* background is supplied by <LockBackdrop> so the brief shares the exact
+     lock-screen / chat treatment; the surface itself stays transparent. */
+  color: var(--ink-soft);
+  font-family: var(--font-serif);
+}
+/* small-caps kicker / run-in head */
+.kicker {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 10.5px;
+  color: var(--accent);
+}
+/* hairline divider */
+.rule-hair {
+  border-color: var(--rule);
+}
+/* multi-column river: stories pour across columns like a broadsheet, inside a
+   constrained editorial measure (set on the page container) so there's no dead
+   right gutter. */
+.river {
+  column-gap: 2.75rem;
+  column-rule: 1px solid var(--rule);
+}
+@media (min-width: 768px) {
+  .river {
+    column-count: 2;
+  }
+}
+@media (min-width: 1280px) {
+  .river {
+    column-count: 3;
+  }
+}
+@media (min-width: 1920px) {
+  .river {
+    column-count: 4;
+  }
+}
+/* keep a story intact within a column */
+.story {
+  break-inside: avoid;
+}
+/* the opening lede drop-cap — neon, glowing, like the hero wordmark */
+.drop-cap::first-letter {
+  float: left;
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: 5.6em;
+  line-height: 0.74;
+  padding: 0.04em 0.1em 0 0;
+  color: var(--link);
+  text-shadow: 0 0 22px rgba(124, 192, 255, 0.5);
+}

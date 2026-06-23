@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Solo — Personal Intelligence Harness</title>
+<style>
+  @page { size: A4; margin: 0; }
+  :root {
+    --bg: #0b0d12;
+    --bg-soft: #11141b;
+    --panel: #151922;
+    --panel-2: #1b2030;
+    --line: #2a3142;
+    --text: #e7ebf3;
+    --muted: #8a93a6;
+    --accent: #7c9cff;
+    --accent-2: #5ee3c0;
+    --accent-3: #ffb86b;
+    --accent-4: #ff7eb6;
+  }
+  * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  html, body { margin: 0; padding: 0; background: var(--bg); }
+  body {
+    color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 10.5px; line-height: 1.5;
+  }
+  code, .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  h1,h2,h3,h4 { margin: 0; }
+
+  .page {
+    width: 210mm; height: 297mm; padding: 13mm 13mm 11mm;
+    background:
+      radial-gradient(900px 480px at 88% -8%, #1a2233 0%, rgba(26,34,51,0) 60%),
+      var(--bg);
+    position: relative; overflow: hidden;
+  }
+  .page.two { page-break-before: always; }
+
+  /* Header */
+  .hd { display:flex; align-items:flex-end; justify-content:space-between; border-bottom: 1px solid var(--line); padding-bottom: 12px; margin-bottom: 16px; }
+  .hd .ey { color: var(--accent-2); font-size: 8.5px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; }
+  .hd h1 { font-size: 27px; letter-spacing: -.7px; margin-top: 5px; font-weight: 800; }
+  .hd h1 .g { background: linear-gradient(110deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .hd .r { text-align: right; font-size: 8.6px; color: var(--muted); line-height: 1.55; }
+  .dot { display:inline-block; width:8px; height:8px; border-radius:50%; background: var(--accent-2); box-shadow:0 0 12px var(--accent-2); margin-right:6px; vertical-align: middle; }
+
+  .lede { font-size: 11px; color: var(--muted); margin: 0 0 18px; max-width: 96%; }
+  .lede b { color: var(--text); }
+
+  .sec-h { display:flex; align-items:center; gap:9px; margin: 0 0 12px; }
+  .sec-h .n { color: var(--accent); font-weight: 800; font-size: 9.5px; letter-spacing:1px; }
+  .sec-h h2 { font-size: 15px; letter-spacing: -.3px; font-weight: 750; }
+  .sec-h .ln { flex:1; height:1px; background: linear-gradient(90deg, var(--line), transparent); }
+  section { margin-bottom: 20px; }
+
+  /* ===== Architecture centerpiece ===== */
+  .arch { background: linear-gradient(180deg, var(--panel), var(--bg-soft)); border:1px solid var(--line); border-radius: 14px; padding: 18px; }
+  .tabs { display:grid; grid-template-columns: 1fr 44px 1fr; align-items: stretch; gap: 0; }
+  .tcard { border:1px solid var(--line); border-radius: 11px; padding: 13px 15px; background: var(--panel-2); }
+  .tcard.a { border-top: 3px solid var(--accent); }
+  .tcard.b { border-top: 3px solid var(--accent-2); }
+  .tcard .tg { font-size: 8px; letter-spacing:1.5px; text-transform:uppercase; font-weight:800; color: var(--ac); }
+  .tcard.a .tg { color: var(--accent); } .tcard.b .tg { color: var(--accent-2); }
+  .tcard h4 { font-size: 12px; margin: 3px 0 7px; }
+  .tcard ul { margin:0; padding-left: 14px; color: var(--muted); }
+  .tcard li { margin-bottom: 3px; }
+  .tcard li b { color: var(--text); }
+  .bridge { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; }
+  .bridge .lab { font-size: 6.6px; color: var(--accent); writing-mode: vertical-rl; transform: rotate(180deg); letter-spacing:1px; text-transform:uppercase; font-weight:700; }
+  .bridge .ar { color: var(--accent); font-size: 16px; line-height:1; }
+
+  .pipe { display:flex; align-items:center; justify-content:center; margin: 12px 0 2px; }
+  .pipe .seg { color: var(--muted); font-size: 7px; }
+  .pipe .v { color: var(--accent); font-size: 15px; margin: 2px 0; }
+
+  .band { margin-top: 10px; border:1px dashed var(--accent); border-radius:10px; padding:10px 12px; text-align:center; background: rgba(124,156,255,.06); }
+  .band.c2 { border-style:solid; border-color: var(--accent-2); background: rgba(94,227,192,.06); margin-top:8px; }
+  .band .k { font-size:8px; letter-spacing:1.5px; text-transform:uppercase; font-weight:800; color: var(--accent); }
+  .band.c2 .k { color: var(--accent-2); }
+  .band .chips { margin-top:6px; display:flex; gap:8px; justify-content:center; flex-wrap:wrap; }
+  .band .chip { font-size:9px; font-weight:600; padding:3px 11px; border-radius:999px; border:1px solid var(--line); background: var(--bg-soft); }
+  .band code { color: var(--accent-2); font-size:9.5px; }
+  .band b { color: var(--accent-2); }
+  .swap { margin-top:7px; font-size:9.5px; color: var(--text); }
+
+  /* ===== Morning run pipeline ===== */
+  .flow { display:flex; align-items:stretch; gap:0; }
+  .st { flex:1; background: linear-gradient(180deg, var(--panel), var(--bg-soft)); border:1px solid var(--line); border-radius:10px; padding:11px 10px; position:relative; }
+  .st .num { position:absolute; top:8px; right:9px; font-size:13px; font-weight:800; color: rgba(124,156,255,.18); }
+  .st .k { font-size:7px; font-weight:800; letter-spacing:.6px; color: var(--accent-2); text-transform:uppercase; }
+  .st .t { font-weight:750; font-size:11px; margin:4px 0 3px; }
+  .st .d { font-size:8px; color: var(--muted); line-height:1.4; }
+  .conn { width:18px; display:flex; align-items:center; justify-content:center; color: var(--accent); font-size:13px; flex:0 0 18px; }
+  .note { font-size:8.6px; color:var(--muted); margin:9px 0 0; text-align:center; }
+
+  /* ===== Four Pillars ===== */
+  .pil { display:grid; grid-template-columns: 1fr 1fr; gap: 13px; }
+  .p { background: linear-gradient(180deg, var(--panel), var(--bg-soft)); border:1px solid var(--line); border-radius: 13px; padding: 14px 15px; border-top: 3px solid var(--pc); position:relative; }
+  .p .row { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+  .p .badge { width:30px; height:30px; flex:0 0 30px; border-radius:9px; background: var(--pcsoft); border:1px solid var(--pc); display:flex; align-items:center; justify-content:center; font-size:14px; }
+  .p .pn { font-size: 7.5px; font-weight:800; letter-spacing:1px; text-transform:uppercase; color: var(--pc); }
+  .p h3 { font-size: 13px; margin: 1px 0 0; }
+  .p p { margin: 0 0 8px; color: var(--muted); font-size:9.5px; }
+  .p p b, .p li b { color: var(--text); }
+
+  /* mini diagrams inside pillars */
+  .loop { display:flex; gap:6px; align-items:center; justify-content:center; margin-top:2px; }
+  .loop .lb { font-size:8px; font-weight:700; padding:5px 8px; border-radius:7px; background: var(--panel-2); border:1px solid var(--line); }
+  .loop .lb.hot { border-color: var(--accent); color: var(--accent); }
+  .loop .ar { color: var(--accent); font-size:11px; }
+  .limits { display:flex; gap:6px; margin-top:9px; }
+  .limits .lim { flex:1; text-align:center; border:1px solid var(--line); border-radius:8px; padding:6px 4px; background: var(--bg-soft); }
+  .limits .lim .b { font-size:11px; font-weight:800; color: var(--accent); }
+  .limits .lim .s { font-size:7px; color: var(--muted); }
+
+  .tflow { display:flex; align-items:center; gap:5px; margin:2px 0 8px; }
+  .tflow .box { flex:1; text-align:center; border:1px solid var(--line); border-radius:8px; padding:6px 3px; background: var(--panel-2); font-size:8px; font-weight:700; }
+  .tflow .box.r { color: var(--accent-2); border-color: var(--accent-2); }
+  .tflow .ar { color: var(--accent-2); font-size:11px; }
+  .toolchips { display:flex; flex-wrap:wrap; gap:5px; }
+  .toolchips .tc { font-size:7.8px; font-family: ui-monospace, monospace; padding:3px 7px; border-radius:6px; background: var(--bg-soft); border:1px solid var(--line); }
+  .toolchips .tc b { color: var(--accent-2); }
+
+  .funnel { display:flex; flex-direction:column; gap:5px; align-items:center; margin-top:2px; }
+  .funnel .lyr { border:1px solid var(--pc); border-radius:7px; padding:5px 8px; background: var(--pcsoft); text-align:center; }
+  .funnel .lyr .nm { font-size:8.5px; font-weight:800; color: var(--accent-3); }
+  .funnel .lyr .ds { font-size:7.6px; color: var(--muted); }
+  .funnel .w0 { width:100%; } .funnel .w1 { width:80%; } .funnel .w2 { width:60%; }
+  .funnel .ar { color: var(--accent-3); font-size:10px; line-height:.6; }
+
+  .metrics { display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:2px; }
+  .metrics .m { border:1px solid var(--line); border-radius:8px; padding:7px 9px; background: var(--bg-soft); display:flex; align-items:center; gap:7px; }
+  .metrics .m .pip { width:6px; height:6px; border-radius:50%; background: var(--accent-4); }
+  .metrics .m .mt { font-size:9px; font-family: ui-monospace, monospace; color: var(--text); }
+  .alrm { margin-top:9px; font-size:8.2px; color: var(--muted); display:flex; gap:6px; flex-wrap:wrap; }
+  .alrm .sev { font-size:7px; font-weight:800; padding:2px 7px; border-radius:999px; text-transform:uppercase; }
+  .alrm .sev.h{background:rgba(255,126,182,.18);color:var(--accent-4);}
+  .alrm .sev.c{background:rgba(255,80,80,.2);color:#ff6b6b;}
+
+  /* ===== Stack ===== */
+  .stack { display:grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .lay { display:flex; gap:10px; align-items:center; background: linear-gradient(180deg, var(--panel), var(--bg-soft)); border:1px solid var(--line); border-radius:9px; padding: 8px 11px; }
+  .lay .ic { width:22px; height:22px; flex:0 0 22px; border-radius:6px; background: var(--panel-2); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; font-size:11px; }
+  .lay .k { font-size:7.4px; font-weight:800; letter-spacing:.5px; color: var(--accent); width: 62px; flex:0 0 62px; }
+  .lay .v { font-size:9px; }
+
+  .foot { position:absolute; bottom:6mm; left:13mm; right:13mm; border-top:1px solid var(--line); padding-top: 8px; font-size: 8px; color: var(--muted); display:flex; justify-content:space-between; }
+</style>
+</head>
+<body>
+
+<!-- ============ PAGE 1 ============ -->
+<div class="page">
+  <div class="hd">
+    <div>
+      <div class="ey">Personal Intelligence Harness</div>
+      <h1><span class="dot"></span>Solo <span class="g">— one harness, two agents</span></h1>
+    </div>
+    <div class="r">Rishik Kolpekwar<br>June 12, 2026<br>built on the four pillars</div>
+  </div>
+
+  <p class="lede">One page every morning — everything relevant to your life, ranked, in 10 minutes. A digest that knows you're building a <b>pathology AI company (MedMorphIQ)</b>, interning at <b>Intel on multi-agent LLM frameworks</b>, and tracking <b>20VC portfolio companies</b> — across Gmail, iMessage and calendar. At the bottom: <b>who to reach out to today, and why</b>, bridging into the outbound engine.</p>
+
+  <section>
+    <div class="sec-h"><span class="n">01</span><h2>What I'm Building</h2><span class="ln"></span></div>
+    <div class="arch">
+      <div class="tabs">
+        <div class="tcard a">
+          <div class="tg">Tab 1</div>
+          <h4>Morning Brief</h4>
+          <ul>
+            <li>Pulls every source <b>in parallel</b> at 7AM</li>
+            <li>Scores items vs <b>your profile</b>, drops noise</li>
+            <li>Reads <b>next 48h calendar</b> to shape output</li>
+            <li>Ends with an <b>action queue</b></li>
+          </ul>
+        </div>
+        <div class="bridge">
+          <div class="ar">→</div>
+          <div class="lab">action queue</div>
+          <div class="ar">→</div>
+        </div>
+        <div class="tcard b">
+          <div class="tg">Tab 2</div>
+          <h4>Outbound Engine · MedMorphIQ</h4>
+          <ul>
+            <li>Drafts emails <b>in your voice</b></li>
+            <li>Everything <b>queues for review</b></li>
+            <li><b>Nothing auto-sends</b></li>
+            <li>Suggests slots from your <b>real calendar</b></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="pipe"><div class="v">▼</div></div>
+
+      <div class="band">
+        <div class="k">Harness Core</div>
+        <div class="chips">
+          <span class="chip">Loop</span><span class="seg">→</span>
+          <span class="chip">Tools</span><span class="seg">→</span>
+          <span class="chip">Guardrails</span><span class="seg">→</span>
+          <span class="chip">Observability</span>
+        </div>
+      </div>
+      <div class="band c2">
+        <div class="k">Agent Interface</div>
+        <div style="margin-top:6px"><code>run(materials, guardrails, tools) → AgentOutput</code></div>
+        <div class="swap">Morning Brief Agent &nbsp;<b>◀ swap ▶</b>&nbsp; Outbound Agent &nbsp;·&nbsp; <span style="color:var(--muted)">swapping agents needs zero changes to the core</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-h"><span class="n">02</span><h2>How a Morning Run Works</h2><span class="ln"></span></div>
+    <div class="flow">
+      <div class="st"><div class="num">1</div><div class="k">7:00 AM</div><div class="t">Fetch</div><div class="d">All sources in parallel. Alarm if &lt;3/8 return.</div></div>
+      <div class="conn">→</div>
+      <div class="st"><div class="num">2</div><div class="k">Stage</div><div class="t">Score</div><div class="d">Claude scores 0–1. Drop below 0.4.</div></div>
+      <div class="conn">→</div>
+      <div class="st"><div class="num">3</div><div class="k">Stage</div><div class="t">Calendar</div><div class="d">Read 48h. Prep + adjust length.</div></div>
+      <div class="conn">→</div>
+      <div class="st"><div class="num">4</div><div class="k">Stage</div><div class="t">Generate</div><div class="d">Write brief. Every name cites a source.</div></div>
+      <div class="conn">→</div>
+      <div class="st"><div class="num">5</div><div class="k">Stage</div><div class="t">Actions</div><div class="d">Who to email + why. Jobs. Follow-ups.</div></div>
+      <div class="conn">→</div>
+      <div class="st"><div class="num">6</div><div class="k">Stage</div><div class="t">Deliver</div><div class="d">Render UI. Persist run. OTel spans.</div></div>
+    </div>
+    <p class="note">Each stage checkpoints to SQLite — a mid-run failure replays from the last checkpoint, not from scratch.</p>
+  </section>
+
+  <div class="foot"><span>Solo — Personal Intelligence Harness</span><span>Page 1 · What I'm building</span></div>
+</div>
+
+<!-- ============ PAGE 2 ============ -->
+<div class="page two">
+  <section>
+    <div class="sec-h"><span class="n">03</span><h2>The Four Pillars</h2><span class="ln"></span></div>
+    <div class="pil">
+
+      <!-- Pillar 1 -->
+      <div class="p" style="--pc:var(--accent); --pcsoft:rgba(124,156,255,.12)">
+        <div class="row"><div class="badge">🔁</div><div><div class="pn">Pillar 1</div><h3>The Agent Loop</h3></div></div>
+        <p>The harness drives the agent — it never calls the model directly.</p>
+        <div class="loop">
+          <span class="lb hot">reason</span><span class="ar">→</span>
+          <span class="lb">tool call</span><span class="ar">→</span>
+          <span class="lb">dispatch</span><span class="ar">↺</span>
+          <span class="lb">done</span>
+        </div>
+        <div class="limits">
+          <div class="lim"><div class="b">8</div><div class="s">MAX_TURNS</div></div>
+          <div class="lim"><div class="b">32k</div><div class="s">TOKEN BUDGET</div></div>
+          <div class="lim"><div class="b">120s</div><div class="s">WALL CLOCK</div></div>
+        </div>
+      </div>
+
+      <!-- Pillar 2 -->
+      <div class="p" style="--pc:var(--accent-2); --pcsoft:rgba(94,227,192,.12)">
+        <div class="row"><div class="badge">🧰</div><div><div class="pn">Pillar 2</div><h3>Tools</h3></div></div>
+        <p>Every source & action is a typed tool. <b>Errors are data, not crashes.</b></p>
+        <div class="tflow">
+          <span class="box">Schema</span><span class="ar">→</span>
+          <span class="box">Executor</span><span class="ar">→</span>
+          <span class="box r">{ok, data, error}</span>
+        </div>
+        <div class="toolchips">
+          <span class="tc"><b>search_news</b></span>
+          <span class="tc"><b>read_gmail</b></span>
+          <span class="tc"><b>enrich_contact</b></span>
+          <span class="tc"><b>draft_email</b></span>
+          <span class="tc"><b>send_email</b> 🔒</span>
+        </div>
+      </div>
+
+      <!-- Pillar 3 -->
+      <div class="p" style="--pc:var(--accent-3); --pcsoft:rgba(255,184,107,.12)">
+        <div class="row"><div class="badge">🛡️</div><div><div class="pn">Pillar 3</div><h3>Guardrails</h3></div></div>
+        <p>Three layers, named constants in <code style="color:var(--accent-3)">guardrails.py</code> — not in prompts.</p>
+        <div class="funnel">
+          <div class="lyr w0"><div class="nm">INPUT</div><div class="ds">drop &lt;0.4 · dedup 48h · cap 24k · allow-list domains</div></div>
+          <div class="ar">▼</div>
+          <div class="lyr w1"><div class="nm">ACTION</div><div class="ds">allow-listed tools · send needs token · max 10 enrich</div></div>
+          <div class="ar">▼</div>
+          <div class="lyr w2"><div class="nm">OUTPUT</div><div class="ds">citations required · schema validated</div></div>
+        </div>
+      </div>
+
+      <!-- Pillar 4 -->
+      <div class="p" style="--pc:var(--accent-4); --pcsoft:rgba(255,126,182,.12)">
+        <div class="row"><div class="badge">📈</div><div><div class="pn">Pillar 4</div><h3>Observability</h3></div></div>
+        <p>Every call emits a trace span → <b>Langfuse</b>. Replay any run, score quality.</p>
+        <div class="metrics">
+          <div class="m"><span class="pip"></span><span class="mt">p95 latency</span></div>
+          <div class="m"><span class="pip"></span><span class="mt">$ / run cost</span></div>
+          <div class="m"><span class="pip"></span><span class="mt">err % rate</span></div>
+          <div class="m"><span class="pip"></span><span class="mt">eval pass rate</span></div>
+        </div>
+        <div class="alrm">
+          <span class="sev c">critical</span> guardrail violation → hard block
+          <span class="sev h">high</span> hallucination → strip + re-run
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-h"><span class="n">04</span><h2>Tech Stack</h2><span class="ln"></span></div>
+    <div class="stack">
+      <div class="lay"><div class="ic">🖥️</div><span class="k">FRONTEND</span><span class="v">Next.js + Tailwind (two-tab UI)</span></div>
+      <div class="lay"><div class="ic">⚙️</div><span class="k">BACKEND</span><span class="v">Python + FastAPI</span></div>
+      <div class="lay"><div class="ic">🧠</div><span class="k">LLM</span><span class="v">Claude Sonnet 4.6 (Anthropic API)</span></div>
+      <div class="lay"><div class="ic">🔭</div><span class="k">TRACING</span><span class="v">OpenTelemetry → Langfuse</span></div>
+      <div class="lay"><div class="ic">💾</div><span class="k">STORAGE</span><span class="v">SQLite (checkpoints, runs)</span></div>
+      <div class="lay"><div class="ic">⏰</div><span class="k">SCHEDULER</span><span class="v">APScheduler (7AM daily)</span></div>
+      <div class="lay"><div class="ic">🔎</div><span class="k">SEARCH</span><span class="v">Exa (semantic) + Tavily (real-time)</span></div>
+      <div class="lay"><div class="ic">📥</div><span class="k">INBOX</span><span class="v">Gmail MCP + iMessage chat.db</span></div>
+      <div class="lay"><div class="ic">📅</div><span class="k">CALENDAR</span><span class="v">Google Calendar MCP</span></div>
+      <div class="lay"><div class="ic">📰</div><span class="k">RSS</span><span class="v">20VC + Substack (curated)</span></div>
+      <div class="lay"><div class="ic">💼</div><span class="k">JOBS</span><span class="v">InternList, GitHub, Handshake, Exa</span></div>
+      <div class="lay"><div class="ic">🔗</div><span class="k">ENRICH</span><span class="v">People Data Labs + Hunter.io</span></div>
+    </div>
+  </section>
+
+  <div class="foot"><span>One harness · two agents · four pillars</span><span>Page 2 · Pillars & stack</span></div>
+</div>
+
+</body>
+</html>

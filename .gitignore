@@ -1,0 +1,34 @@
+# dependencies
+node_modules/
+**/node_modules/
+
+# builds / outputs
+.next/
+**/.next/
+dist/
+**/dist/
+out/
+**/out/
+*.tsbuildinfo
+
+# env / secrets (keep the .example templates)
+.env
+.env.local
+**/.env
+**/.env.local
+!**/.env.example
+
+# data / db (runtime data + secrets live here)
+server/data/
+**/data/
+*.log
+
+# os / tooling
+.DS_Store
+**/.DS_Store
+.gstack/
+.vercel/
+
+# personal strategy / owner context — never publish
+profile.md
+/CLAUDE.md
